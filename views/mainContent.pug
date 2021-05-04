@@ -1,4 +1,4 @@
-extends template.pug
+extends _template.pug
 
 block content
   div.main-content
@@ -7,4 +7,9 @@ block content
 
     button.update Update users
 
-    ul.users
+    ul.products
+      each p in products
+       li
+        img(src='http://localhost:1337'+p.images[0].formats.small.url alt="")
+        h4= p.title
+        p= p.description
