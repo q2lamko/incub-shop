@@ -15,11 +15,17 @@ app.use(
   createProxyMiddleware({target: 'STRAPI_URl', changeOrigin: true})
 )
 
-app.get('/', (req, res) => {
-  fetch(`${STRAPI_URL}/products`)
+app.get('/', async (req, res) => {
+  await fetch(`${STRAPI_URL}/page-home-settings?name=category_on_home`)
+    .then((res) => res.json())
+    .then((categoriesOnMain) => {
+      console.log(categoriesOnMain)
+    })
+
+  await fetch(`${STRAPI_URL}/products`)
     .then((res) => res.json())
     .then((products) => {
-      res.render('mainContent', {products});
+      res.render('pages/home', {products});
     })
 
 })
