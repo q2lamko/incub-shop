@@ -12,25 +12,20 @@ app.use(express.static('public'))
 
 app.use(
   '/uploads',
-  createProxyMiddleware({target: 'STRAPI_URl', changeOrigin: true})
+  createProxyMiddleware({target: 'STRAPI_URL', changeOrigin: true})
 )
 
 app.get('/', async (req, res) => {
-  await fetch(`${STRAPI_URL}/page-home-settings?name=category_on_home`)
-    .then((res) => res.json())
-    .then((categoriesOnMain) => {
-      console.log(categoriesOnMain)
-    })
+  // const categoriesOnMainRaw = await fetch(`${STRAPI_URL}/page-home-settings?name=category_on_home`)
+  // const categoriesOnMain = await categoriesOnMainRaw.json()
+  //
+  // const productsRaw = await fetch(`${STRAPI_URL}/products?categories=${categoriesOnMain[0].value}`)
+  const productsRaw = await fetch(`${STRAPI_URL}/products?categories=${req.query.categories}`)
+  const products = await productsRaw.json()
 
-  await fetch(`${STRAPI_URL}/products`)
-    .then((res) => res.json())
-    .then((products) => {
-      res.render('pages/home', {products});
-    })
+  return res.render(`pages/home`, {products})
 
 })
-
-
 
 
 app.listen(port, () => {
